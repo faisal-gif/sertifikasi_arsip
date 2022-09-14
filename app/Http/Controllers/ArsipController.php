@@ -12,6 +12,11 @@ class ArsipController extends Controller
         $arsips = Arsip::latest()->get();
         return view('arsip.index', compact('arsips'));
     }
+    public function cari(Request $request)
+    {
+        $arsips = Arsip::where('judul',$request->cari)->get();
+        return view('arsip.index', compact('arsips'));
+    }
     public function create()
     {
         return view('arsip.create');
@@ -32,22 +37,37 @@ class ArsipController extends Controller
             'noSurat' => $request->noSurat,
             'kategori' => $request->kategori,
             'judul' => $request->judul,
-            'slug' => $upload
+            'file' => $fileName
         ]);
 
         if ($arsip) {
             return redirect()
                 ->route('arsip.index')
                 ->with([
-                    'success' => 'New post has been created successfully'
+                    'success' => 'Data berhasil diarsipkan'
                 ]);
         } else {
             return redirect()
                 ->back()
                 ->withInput()
                 ->with([
-                    'error' => 'Some problem occurred, please try again'
+                    'error' => 'Data gagal diarsipkan'
                 ]);
         }
+    }
+    public function showArsip($id)
+    {
+        $arsips = Arsip::where('noSurat', $id)->first();
+        return view('arsip.show', compact('arsips'));
+    }
+    public function download($file)
+    {
+        return response()->download(public_path('uploads/' . $file));
+    }
+    public function destroy($id)
+    {
+        $arsip = Arsip::where('noSurat', $id);
+        $arsip->delete();
+        return redirect()->route('arsip.index')->with(['success' => 'Arsip sudah dihapus']);
     }
 }

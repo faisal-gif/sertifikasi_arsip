@@ -18,3 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('arsip', ArsipController::class);
+Route::get('/lihat/{id}', [ArsipController::class,'showArsip'])->name('lihat');
+Route::get('/download/{file}',  [ArsipController::class,'download'])->name('download');
+Route::get('/delete/{noSurat}',  [ArsipController::class,'destroy'])->name('delete');
+Route::post('/cari',  [ArsipController::class,'cari'])->name('cari');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');

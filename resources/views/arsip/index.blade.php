@@ -26,6 +26,16 @@
                     </p>
                     </br>
 
+                    <form action="{{ route('cari') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row">
+                           
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="cari" value="{{ old('cari') }}" required placeholder="cari berdasarakan judul...">
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary">Cari</button>
+                        </div>
+                    </form>
                     <table class="table table-bordered mt-1">
                         <thead>
                             <tr>
@@ -44,12 +54,12 @@
                                 <td>{{ $a->judul }}</td>
                                 <td>{{ $a->created_at->format('d-m-Y') }}</td>
                                 <td class="text-center">
-                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('post.destroy', $post->id) }}" method="POST">
-                                        <a href="{{ route('post.edit', $post->id) }}" class="btn btn-sm btn-primary">EDIT</a>
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
-                                    </form>
+                                    <a href="{{ route('lihat',$a->noSurat) }}" class="btn btn-sm btn-primary">Lihat</a>
+                                    <a href="{!! route('download', $a->file) !!}" class="btn btn-sm btn-warning">Unduh</a>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#hapus{{$a->noSurat}}">
+                                        Hapus
+                                    </button>
+
                                 </td>
                             </tr>
                             @empty
@@ -65,4 +75,27 @@
         </div>
     </div>
 </div>
+@foreach($arsips as $a)
+<!-- Modal -->
+<div class="modal fade bd-example-modal-sm" id="hapus{{$a->noSurat}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus arsip surat ini ?
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a href="{{ route('delete',$a->noSurat) }}" class="btn btn-danger">Iya</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

@@ -30,7 +30,7 @@
                     </p>
                     </br>
                     </br>
-                    <form action="{{ route('arsip.store') }}" method="POST">
+                    <form action="{{ route('arsip.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label for="noSurat" class="col-sm-2 col-form-label">No Surat</label>
@@ -49,10 +49,17 @@
                         <div class="form-group row">
                             <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
                             <div class="col-sm-4">
-                                <select name="status" class="form-control" required>
-                                    <option value="1" selected>Publish</option>
-                                    <option value="0">Draft</option>
+                                <select name="kategori" class="form-control" required>
+                                    <option selected>Undangan</option>
+                                    <option>Pengumuman</option>
+                                    <option>Nota Dinas</option>
+                                    <option>Pemberitahuan</option>
                                 </select>
+                                @error('kategori')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
 
@@ -72,12 +79,15 @@
                         <div class="form-group row">
                             <label for="upload" class="col-sm-2 col-form-label">File Surat(PDF)</label>
                             <div class="col-sm-4">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile">
-                                    <label class="custom-file-label" for="inputGroupFile" aria-describedby="inputGroupFileAddon">Choose image</label>
-                                </div>
+
+                                <input class="form-control-file" type="file" id="file" name="file">
 
                             </div>
+                            @error('file')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                         </div>
 
                         </br>
