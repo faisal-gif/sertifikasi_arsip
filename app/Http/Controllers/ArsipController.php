@@ -27,7 +27,7 @@ class ArsipController extends Controller
             'noSurat' => 'required|string|max:155',
             'kategori' => 'required',
             'judul' => 'required',
-            'file' => 'required|mimes:pdf,xlx,csv|max:2048'
+            'file' => 'required|mimes:pdf|max:2048'
         ]);
         $fileName = time() . '.' . $request->file->extension();
 
@@ -41,18 +41,9 @@ class ArsipController extends Controller
         ]);
 
         if ($arsip) {
-            return redirect()
-                ->route('arsip.index')
-                ->with([
-                    'success' => 'Data berhasil diarsipkan'
-                ]);
+            return redirect()->route('arsip.index')->with(['success' => 'Data berhasil diarsipkan']);
         } else {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with([
-                    'error' => 'Data gagal diarsipkan'
-                ]);
+            return redirect()->back()->withInput()->with(['error' => 'Data gagal diarsipkan']);
         }
     }
     public function showArsip($id)
@@ -64,7 +55,7 @@ class ArsipController extends Controller
     {
         return response()->download(public_path('uploads/' . $file));
     }
-    public function destroy($id)
+    public function delete($id)
     {
         $arsip = Arsip::where('noSurat', $id);
         $arsip->delete();

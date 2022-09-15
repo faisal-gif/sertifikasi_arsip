@@ -6,7 +6,7 @@
         <div class="col-md-12">
 
             <div class="card border-0 shadow rounded">
-                <div class="card-body">
+            <div class="card-body">
                     <h3>Arsip Surat >> Lihat</h3>
 
                     <p>
@@ -27,6 +27,6 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 @endsection
