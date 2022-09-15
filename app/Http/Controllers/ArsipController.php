@@ -51,6 +51,36 @@ class ArsipController extends Controller
         $arsips = Arsip::where('noSurat', $id)->first();
         return view('arsip.show', compact('arsips'));
     }
+    public function edit($id)
+    {
+        $arsips = Arsip::where('noSurat', $id)->first();
+        return view('arsip.edit', compact('arsips'));
+    }
+    public function update(Request $request,$id)
+    {
+        $this->validate($request, [
+            'noSurat' => 'required|string|max:155',
+            'kategori' => 'required',
+            'judul' => 'required',
+            'file' => 'required|mimes:pdf|max:2048'
+        ]);
+        $fileName = time() . '.' . $request->file->extension();
+        $upload = $request->file->move(public_path('uploads'), $fileName);
+
+        $arsip =Arsip::where('noSurat', $id);
+        $arsip->update([
+            'noSurat' => $request->noSurat,
+            'kategori' => $request->kategori,
+            'judul' => $request->judul,
+            'file' => $fileName
+        ]);
+
+        if ($arsip) {
+            return redirect()->route('lihat',$id)->with(['success' => 'Data berhasil diarsipkan']);
+        } else {
+            return redirect()->back()->withInput()->with(['error' => 'Data gagal diarsipkan']);
+        }
+    }
     public function download($file)
     {
         return response()->download(public_path('uploads/' . $file));

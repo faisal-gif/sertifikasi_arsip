@@ -3,10 +3,22 @@
 
 <div class="container mt-5 mb-5">
     <div class="row">
+        <!-- Notifikasi menggunakan flash session data -->
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+        @endif
         <div class="col-md-12">
 
             <div class="card border-0 shadow rounded">
-            <div class="card-body">
+                <div class="card-body">
                     <h3>Arsip Surat >> Lihat</h3>
 
                     <p>
@@ -22,11 +34,11 @@
                     <br>
                     <a href="{{ route('arsip.index') }}" class="btn btn-sm btn-primary">Kembali</a>
                     <a href="{!! route('download', $arsips->file) !!}" class="btn btn-sm btn-warning">Unduh</a>
-                    <a href="#" class="btn btn-sm btn-secondary">Edit/Ganti File</a>
+                    <a href="{{ route('arsip.edit', $arsips->noSurat) }}" class="btn btn-sm btn-secondary">Edit/Ganti File</a>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+</div>
 
 @endsection
